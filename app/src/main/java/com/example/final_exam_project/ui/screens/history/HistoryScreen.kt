@@ -23,18 +23,24 @@ fun HistoryScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(modifier = modifier) { paddingValues ->
-        if (uiState.sessions.isEmpty()) {
-            EmptyState(message = "No workouts logged yet", modifier = Modifier)
-        } else {
-            LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                items(uiState.sessions, key = { it.id }) { session ->
-                    WorkoutListItem(
-                        session = session,
-                        onClick = { onEditSession(it.id) },
-                        onDelete = { /* TODO (Milestone 5): viewModel.delete(it) */ }
-                    )
+        when {
+            // isLoading is true until the first Room emission arrives; showing nothing
+            // here prevents a false "no workouts yet" flash on startup.
+            uiState.isLoading -> Unit
+
+            uiState.sessions.isEmpty() ->
+                EmptyState(message = "No workouts logged yet", modifier = Modifier)
+
+            else ->
+                LazyColumn(modifier = Modifier.padding(paddingValues)) {
+                    items(uiState.sessions, key = { it.id }) { session ->
+                        WorkoutListItem(
+                            session = session,
+                            onClick = { onEditSession(it.id) },
+                            onDelete = { viewModel.delete(it) }
+                        )
+                    }
                 }
-            }
         }
     }
 }
