@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WorkoutDao {
 
+    // OnConflictStrategy.REPLACE: if a row with the same primary key already exists,
+    // delete it and insert the new one. For new sessions (id = 0) Room auto-generates
+    // the ID, so conflicts never happen in practice — REPLACE is just a safe default.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(session: WorkoutSession): Long
 

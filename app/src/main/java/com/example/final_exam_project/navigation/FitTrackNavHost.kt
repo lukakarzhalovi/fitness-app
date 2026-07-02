@@ -30,14 +30,19 @@ fun FitTrackNavHost(viewModelFactory: ViewModelFactory) {
             NavigationBar {
                 BottomNavItem.items.forEach { item ->
                     NavigationBarItem(
+                        // hierarchy walks the full back-stack destination chain (parent → child).
+                        // Checking hierarchy (not just the current route) means the tab stays
+                        // highlighted even when a nested screen like the edit form is open.
                         selected = currentRoute?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
                             navController.navigate(item.route) {
+                                // popUpTo the start destination: clears intermediate screens so
+                                // tapping a tab never builds up a deep back stack.
                                 popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                                    saveState = true  // remember the scroll position / state of the tab we're leaving
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                                launchSingleTop = true  // don't push a duplicate if the tab is already on top
+                                restoreState = true     // bring back the saved state of the tab we're navigating to
                             }
                         },
                         icon = { Icon(imageVector = item.icon, contentDescription = item.label) },

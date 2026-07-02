@@ -30,12 +30,14 @@ fun FitTrackNavGraph(
             DashboardScreen(viewModelFactory = viewModelFactory)
         }
 
-        // "New workout" route: after saving, switch to the History tab so the user
-        // can immediately see the entry they just logged.
+        // "New workout" route (no ID in the URL): after saving, switch to History
+        // so the user can immediately see the entry they just logged.
         composable(BottomNavItem.Workouts.route) {
             WorkoutsScreen(
                 viewModelFactory = viewModelFactory,
                 onSaved = {
+                    // Same popUpTo/launchSingleTop/restoreState combo as the bottom
+                    // bar — clears the back stack and restores the History tab's state.
                     navController.navigate(BottomNavItem.History.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -47,16 +49,20 @@ fun FitTrackNavGraph(
             )
         }
 
-        // "Edit workout" route: after saving, pop this screen off the back stack
-        // to return to the History screen the user came from.
+        // "Edit workout" route: the workout's database ID is embedded in the URL
+        // (e.g. "workouts/42") so the form knows which record to load.
+        // navArgument declares the type as LongType so Navigation parses it automatically.
         composable(
             route = "${BottomNavItem.Workouts.route}/{$EDIT_ID_ARG}",
             arguments = listOf(navArgument(EDIT_ID_ARG) { type = NavType.LongType })
         ) { backStackEntry ->
+            // Read the ID that Navigation extracted from the URL segment.
             val editingId = backStackEntry.arguments?.getLong(EDIT_ID_ARG)
             WorkoutsScreen(
                 viewModelFactory = viewModelFactory,
                 editingId = editingId,
+                // popBackStack() removes this edit screen and returns to History,
+                // which is simpler than navigating to History explicitly from here.
                 onSaved = { navController.popBackStack() }
             )
         }
