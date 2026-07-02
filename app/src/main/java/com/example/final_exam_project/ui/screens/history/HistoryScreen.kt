@@ -29,7 +29,11 @@ fun HistoryScreen(
             uiState.isLoading -> Unit
 
             uiState.sessions.isEmpty() ->
-                EmptyState(message = "No workouts logged yet", modifier = Modifier)
+                EmptyState(
+                    message = "No workouts logged yet",
+                    subtitle = "Head to Workouts to log your first session",
+                    modifier = Modifier.padding(paddingValues)
+                )
 
             else ->
                 LazyColumn(modifier = Modifier.padding(paddingValues)) {

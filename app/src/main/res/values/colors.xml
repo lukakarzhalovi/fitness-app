@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="fittrack_primary">#FF3D5AFE</color>
+    <color name="fittrack_secondary">#FF00BFA5</color>
 </resources>

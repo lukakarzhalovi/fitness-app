@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Finalexamproject" parent="android:Theme.Material.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:colorPrimary">@color/fittrack_primary</item>
+        <item name="android:colorAccent">@color/fittrack_secondary</item>
     </style>
 </resources>

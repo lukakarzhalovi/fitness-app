@@ -1,6 +1,8 @@
 package com.example.final_exam_project.navigation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,12 +17,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.final_exam_project.di.ViewModelFactory
 
-// Top-level Scaffold: bottom NavigationBar (Dashboard/Workouts/History) driving the NavHost.
 @Composable
 fun FitTrackNavHost(viewModelFactory: ViewModelFactory) {
     val navController = rememberNavController()
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         bottomBar = {
             val backStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = backStackEntry?.destination
